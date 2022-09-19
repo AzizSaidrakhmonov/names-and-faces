@@ -195,7 +195,7 @@ export const firstName = [
     "firstName": "Shahnoza",
   }, {
     "gender": "female",
-    "firstName": "Shoxruh",
+    "firstName": "Matluba",
   }, {
     "gender": "female",
     "firstName": "Shoira",
