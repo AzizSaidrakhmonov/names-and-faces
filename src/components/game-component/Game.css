@@ -1,0 +1,76 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.people {
+  width: 90vw;
+  max-width: 1170px;
+  margin: 5rem auto;
+}
+
+.container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: .8rem;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: .8rem;
+  border: 1px solid rgb(185, 184, 184);
+  margin: .5rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+
+
+.card img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.75rem;
+}
+
+.card h4 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #617d98;
+}
+
+.pagination-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.control-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.8rem;
+  margin: 1rem 0;
+}
+
+.page-btn {
+  width: 1.7rem;
+  height: 1.7rem;
+  background: #8bcbf9;
+  border-color: transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: .1rem;
+  transition: all .3s linear;
+}
+
+.page-btn:focus {
+  outline: none;
+}
+
+.active-btn {
+  background: #063251;
+  color: #ffffff;
+}
