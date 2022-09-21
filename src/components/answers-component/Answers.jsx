@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious'
-import RefreshIcon from '@mui/icons-material/Refresh'
-import '../game-component/Game.css'
-import { useGameContext } from '../../context/GameContext'
+import React, { useState } from "react"
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward"
+import ArrowBackIcon from "@mui/icons-material/ArrowBack"
+import SkipPreviousIcon from "@mui/icons-material/SkipPrevious"
+import RefreshIcon from "@mui/icons-material/Refresh"
+import "../game-component/Game.css"
+import { useGameContext } from "../../context/GameContext"
 
 const Answers = () => {
   const { people, currentPerson, setCurrentPerson } = useGameContext()
 
-  const [firstNames, setFirstNames] = useState([])
+  const [firstNames, setFirstNames] = useState(() => Array(50).fill(""))
 
-  const [lastNames, setLastNames] = useState([])
+  const [lastNames, setLastNames] = useState(() => Array(50).fill(""))
 
   const nextPage = (e) => {
     e.preventDefault()
@@ -46,8 +46,8 @@ const Answers = () => {
   const handleFirstName = (e, index) => {
     setFirstNames((firstNames) =>
       firstNames.map((oldValue, currentIndex) =>
-        currentIndex === index ? e.target.value : oldValue,
-      ),
+        currentIndex === index ? e.target.value : oldValue
+      )
     )
   }
 
@@ -89,12 +89,12 @@ const Answers = () => {
           className="first-button"
           onClick={firstPage}
           sx={{
-            fontSize: '3rem',
-            backgroundColor: 'green',
-            color: 'white',
-            borderRadius: '.8rem',
-            padding: '.4rem',
-            cursor: 'pointer',
+            fontSize: "3rem",
+            backgroundColor: "green",
+            color: "white",
+            borderRadius: ".8rem",
+            padding: ".4rem",
+            cursor: "pointer",
           }}
         />
         <RefreshIcon
@@ -103,36 +103,36 @@ const Answers = () => {
             window.location.reload()
           }}
           sx={{
-            fontSize: '3rem',
-            backgroundColor: 'green',
-            color: 'white',
-            borderRadius: '.8rem',
-            padding: '.4rem',
-            cursor: 'pointer',
+            fontSize: "3rem",
+            backgroundColor: "green",
+            color: "white",
+            borderRadius: ".8rem",
+            padding: ".4rem",
+            cursor: "pointer",
           }}
         />
         <ArrowBackIcon
           className="prev-button"
           onClick={prevPage}
           sx={{
-            fontSize: '3rem',
-            backgroundColor: 'green',
-            color: 'white',
-            borderRadius: '.8rem',
-            padding: '.4rem',
-            cursor: 'pointer',
+            fontSize: "3rem",
+            backgroundColor: "green",
+            color: "white",
+            borderRadius: ".8rem",
+            padding: ".4rem",
+            cursor: "pointer",
           }}
         />
         <ArrowForwardIcon
           className="next-button"
           onClick={nextPage}
           sx={{
-            fontSize: '3rem',
-            backgroundColor: 'green',
-            color: 'white',
-            borderRadius: '.8rem',
-            padding: '.4rem',
-            cursor: 'pointer',
+            fontSize: "3rem",
+            backgroundColor: "green",
+            color: "white",
+            borderRadius: ".8rem",
+            padding: ".4rem",
+            cursor: "pointer",
           }}
         />
       </div>
