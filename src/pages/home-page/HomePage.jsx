@@ -1,11 +1,12 @@
 import React from 'react'
-import './HomePage.css'
-import Game from '../../components/game-component/Game'
+import { Outlet } from 'react-router'
+import Navbar from '../../components/navbar-component/Navbar'
 
 const HomePage = () => {
   return (
     <div>
-        <Game/>
+        <Navbar/>
+        <Outlet/>
     </div>
   )
 }

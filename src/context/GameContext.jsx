@@ -7,11 +7,8 @@ const GameContext = React.createContext(false)
 
 export const GameContextProvider = ({ children }) => {
 
-    console.log( peopleImages )
-
   const [people, setPeople] = useState([])
-  const [currentPage, setCurrentPage] = useState(1)
-  const [postsPerPage] = useState(1)
+  const [currentPerson, setCurrentPerson] = useState(1)
 
   const maleImages = []
   const femaleImages = []
@@ -110,13 +107,12 @@ export const GameContextProvider = ({ children }) => {
   useEffect(() => {
     setPeople(shuffled)
   }, [])
-console.log(shuffled,'shuffled');
+  
 const value = {
   people,
   setPeople,
-  currentPage,
-  setCurrentPage,
-  postsPerPage,
+  currentPerson,
+  setCurrentPerson
 }
 
 return (

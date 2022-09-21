@@ -1,0 +1,7 @@
+.navbar {
+    background: green;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
