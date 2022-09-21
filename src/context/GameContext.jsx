@@ -9,6 +9,9 @@ export const GameContextProvider = ({ children }) => {
 
   const [people, setPeople] = useState([])
   const [currentPerson, setCurrentPerson] = useState(1)
+  
+  const [firstNames, setFirstNames] = useState(() => Array(50).fill(''))
+  const [lastNames, setLastNames] = useState(() => Array(50).fill(''))
 
   const maleImages = []
   const femaleImages = []
@@ -104,6 +107,16 @@ export const GameContextProvider = ({ children }) => {
     .sort((a, b) => a.sort - b.sort)
     .map(({ value }) => value)
 
+  const answers = []
+
+  for(let i=0; i<people.length; i++){
+    answers.push({
+      img: people[i]?.img,
+      firstName: firstNames[i],
+      lastName: lastNames[i],
+    })
+  }
+
   useEffect(() => {
     setPeople(shuffled)
   }, [])
@@ -112,7 +125,12 @@ const value = {
   people,
   setPeople,
   currentPerson,
-  setCurrentPerson
+  setCurrentPerson,
+  firstNames,
+  setFirstNames,
+  lastNames,
+  setLastNames,
+  answers
 }
 
 return (

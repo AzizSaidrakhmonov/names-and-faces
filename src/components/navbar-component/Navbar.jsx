@@ -11,6 +11,9 @@ const Navbar = () => {
         <Link to='/answers' style={{textDecoration: 'none', color: '#fff'}}>
             Answers
         </Link>
+        <Link to='/results' style={{textDecoration: 'none', color: '#fff'}}>
+            Results
+        </Link>
     </div>
   )
 }

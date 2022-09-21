@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious'
@@ -6,16 +6,11 @@ import RefreshIcon from '@mui/icons-material/Refresh'
 import '../game-component/Game.css'
 import { useGameContext } from '../../context/GameContext'
 
-const Answers = () => {
-  let { people, currentPerson, setCurrentPerson, firstNames, lastNames, setFirstNames, setLastNames } = useGameContext()
+const Result = () => {
+  const { people, currentPerson, setCurrentPerson, answers } = useGameContext()
 
-
-  // people = people.sort(function(){ return Math.random() - 0.5})
-
-  console.log(people)
-
-  const nextPage = (e) => {
-    e.preventDefault()
+  // Control Buttons
+  const nextPage = () => {
     setCurrentPerson((oldPage) => {
       let nextPage = oldPage + 1
       if (nextPage > people?.length - 1) {
@@ -25,8 +20,7 @@ const Answers = () => {
     })
   }
 
-  const prevPage = (e) => {
-    e.preventDefault()
+  const prevPage = () => {
     setCurrentPerson((oldPage) => {
       let prevPage = oldPage - 1
       if (prevPage < 1) {
@@ -40,42 +34,38 @@ const Answers = () => {
     setCurrentPerson(1)
   }
 
-  const handleLastName = (e, index) => {
-    setLastNames((lastNames) =>
-      lastNames.map((oldValue, currentIndex) =>
-        currentIndex === index ? e.target.value : oldValue,
-      ),
-    )
-  }
-
-  const handleFirstName = (e, index) => {
-    setFirstNames((firstNames) =>
-      firstNames.map((oldValue, currentIndex) =>
-        currentIndex === index ? e.target.value : oldValue,
-      ),
-    )
-  }
-
   return (
     <section className="people">
       <div className="people-image">
-        {people?.map((person, index) => {
+        {answers.map((answer, index) => {
           if (index === currentPerson - 1) {
             return (
               <article key={index}>
-                <img src={people[index]?.img} alt={people[index]?.firstName} />
+                <img
+                  src={answers[index]?.img}
+                  alt={answers[index]?.firstName}
+                />
+
                 <form action="" className="form">
                   <input
-                    type="text"
-                    placeholder="FirstName"
-                    value={firstNames[index]}
-                    onChange={(e) => handleFirstName(e, index)}
+                    readOnly
+                    placeholder={answers[index]?.firstName}
+                    style={{
+                      color:
+                        answers[index]?.firstName !==
+                          people[index]?.firstName && 'red',
+                    }}
+                    value={answers[index]?.firstName}
                   />
                   <input
-                    type="text"
-                    placeholder="LastName"
-                    value={lastNames[index]}
-                    onChange={(e) => handleLastName(e, index)}
+                    readOnly
+                    placeholder={answers[index]?.lastName}
+                    style={{
+                      color:
+                        answers[index]?.lastName !== people[index]?.lastName &&
+                        'red',
+                    }}
+                    value={answers[index]?.lastName}
                   />
                 </form>
               </article>
@@ -86,7 +76,7 @@ const Answers = () => {
         })}
       </div>
       <div className="indicator">
-        <span>{currentPerson}</span>/<span>{people?.length}</span>
+        <span>{currentPerson}</span>/<span>{people.length}</span>
       </div>
       <div className="control-buttons">
         <SkipPreviousIcon
@@ -144,4 +134,4 @@ const Answers = () => {
   )
 }
 
-export default Answers
+export default Result
