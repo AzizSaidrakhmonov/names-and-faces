@@ -1,0 +1,21 @@
+
+:root {
+    --font-family: sans-serif;
+    --primary-color: #2563eb;
+    --border-radius: .5rem;
+  }
+
+.start-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 15rem;
+}
+
+.start-button button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 1rem 2rem;
+    cursor: pointer;
+}
