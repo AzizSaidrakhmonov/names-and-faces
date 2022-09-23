@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { peopleImages } from '../data/faces/faces'
-import { firstName, lastName } from '../data/names/names'
+import React, { useState, useEffect, useContext } from "react"
+import { peopleImages } from "../data/faces/faces"
+import { firstName, lastName } from "../data/names/names"
 
 const GameContext = React.createContext(false)
 
@@ -11,8 +11,8 @@ export const GameContextProvider = ({ children }) => {
   const [currentPerson2, setCurrentPerson2] = useState(1)
   const [currentPerson3, setCurrentPerson3] = useState(1)
 
-  const [firstNames, setFirstNames] = useState(() => Array(50).fill(''))
-  const [lastNames, setLastNames] = useState(() => Array(50).fill(''))
+  const [firstNames, setFirstNames] = useState(() => Array(50).fill(""))
+  const [lastNames, setLastNames] = useState(() => Array(50).fill(""))
 
   const maleImages = []
   const femaleImages = []
@@ -29,13 +29,13 @@ export const GameContextProvider = ({ children }) => {
 
   for (let i = 0; i < maleImages.length; i++) {
     randomMaleImages.push(
-      maleImages[Math.floor(Math.random() * maleImages.length)],
+      maleImages[Math.floor(Math.random() * maleImages.length)]
     )
   }
 
   for (let i = 0; i < femaleImages.length; i++) {
     randomFemaleImages.push(
-      femaleImages[Math.floor(Math.random() * femaleImages.length)],
+      femaleImages[Math.floor(Math.random() * femaleImages.length)]
     )
   }
 
@@ -51,10 +51,10 @@ export const GameContextProvider = ({ children }) => {
   let allUniqueImages = []
 
   let filteredMaleImages = uniqueMaleImages.filter(
-    (x) => !uniqueFemaleImages.includes(x),
+    (x) => !uniqueFemaleImages.includes(x)
   )
   let filteredFemaleImages = uniqueFemaleImages.filter(
-    (x) => !uniqueMaleImages.includes(x),
+    (x) => !uniqueMaleImages.includes(x)
   )
 
   if (uniqueMaleImages.length === randomMaleImages.length) {
@@ -62,7 +62,7 @@ export const GameContextProvider = ({ children }) => {
   } else {
     allUniqueImages = [
       ...filteredMaleImages.concat(
-        filteredFemaleImages?.slice(0, uniqueLength),
+        filteredFemaleImages?.slice(0, uniqueLength)
       ),
     ]
   }
@@ -74,23 +74,23 @@ export const GameContextProvider = ({ children }) => {
   let lastNameFemale = []
 
   for (let i = 0; i < allUniqueImages.length; i++) {
-    if (allUniqueImages[i].gender === 'male') {
-      firstNameMale = firstName.filter((i) => i.gender === 'male')
-      lastNameMale = lastName.filter((i) => i.gender === 'male')
+    if (allUniqueImages[i].gender === "male") {
+      firstNameMale = firstName.filter((i) => i.gender === "male")
+      lastNameMale = lastName.filter((i) => i.gender === "male")
     } else {
-      firstNameFemale = firstName.filter((i) => i.gender === 'female')
-      lastNameFemale = lastName.filter((i) => i.gender === 'female')
+      firstNameFemale = firstName.filter((i) => i.gender === "female")
+      lastNameFemale = lastName.filter((i) => i.gender === "female")
     }
 
     const randomIndexOfFirstNames = Math.floor(
-      Math.random() * (firstNameMale.length || firstNameFemale.length),
+      Math.random() * (firstNameMale.length || firstNameFemale.length)
     )
 
     const randomIndexOfLastNames = Math.floor(
-      Math.random() * (lastNameMale.length || lastNameFemale.length),
+      Math.random() * (lastNameMale.length || lastNameFemale.length)
     )
 
-    if (allUniqueImages[i].gender === 'male') {
+    if (allUniqueImages[i].gender === "male") {
       result.push({
         img: allUniqueImages[i].img,
         firstName: firstNameMale[randomIndexOfFirstNames].firstName,
@@ -133,6 +133,7 @@ export const GameContextProvider = ({ children }) => {
   const value = {
     people,
     setPeople,
+    setShuffledPeople,
     currentPerson,
     setCurrentPerson,
     currentPerson2,
