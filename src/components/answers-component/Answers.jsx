@@ -90,13 +90,13 @@ const Answers = () => {
                 <form action="" className="form">
                   <input
                     type="text"
-                    placeholder="FirstName"
+                    placeholder="Ism"
                     value={firstNames[index]}
                     onChange={(e) => handleFirstName(e, index)}
                   />
                   <input
                     type="text"
-                    placeholder="LastName"
+                    placeholder="Familiya"
                     value={lastNames[index]}
                     onChange={(e) => handleLastName(e, index)}
                   />

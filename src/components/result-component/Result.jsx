@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../game-component/Game.css'
 import { useGameContext } from '../../context/GameContext'
-import { ArrowLeft, ArrowRight, Rewind } from 'react-feather'
+import { ArrowLeft, ArrowRight, Rewind, Eye } from 'react-feather'
 
 const Result = () => {
   const {
@@ -11,6 +11,13 @@ const Result = () => {
     setCurrentPerson3,
     getResults,
   } = useGameContext()
+  const [count, setCount] = useState(100)
+
+  useEffect(() => {
+    getResults[currentPerson3 - 1].firstName ===
+      shuffledPeople[currentPerson3 - 1].firstName && setCount(count - 1)
+      console.log(count, 'count')
+  }, [])
 
   const [visibleFirstNames, setVisibleFirstNames] = useState(
     Array(getResults?.length).fill(false),
@@ -44,10 +51,28 @@ const Result = () => {
     setCurrentPerson3(1)
   }
 
+  // const f = (el, i) => {
+  //   setCount(() => {
+  //     if (
+  //       getResults[currentPerson3 - 1]?.firstName ===
+  //         shuffledPeople[currentPerson3 - 1]?.firstName &&
+  //       i === currentPerson3 - 1
+  //     ) {
+  //       count + 1
+  //     } else {
+  //       count
+  //     }
+
+  //     return f
+  //   })
+  // }
+
+  // console.log(count)
+
   return (
     <section className="people">
       <div className="top">
-        <p>Your Result</p>
+        <p>Your Result {}</p>
       </div>
       <div className="people-image">
         {getResults?.map((result, index) => {
@@ -60,50 +85,78 @@ const Result = () => {
                 />
 
                 <form action="" className="form">
-                  <input
-                    readOnly
+                  <div
                     style={{
-                      color:
-                        getResults[index]?.firstName !==
-                          shuffledPeople[index]?.firstName && 'red',
+                      position: 'relative',
                     }}
-                    value={
-                      visibleFirstNames[index]
-                        ? shuffledPeople[index]?.firstName
-                        : getResults[index]?.firstName
-                    }
-                    onClick={() =>
-                      setVisibleFirstNames((firstNames) =>
-                        firstNames?.map((firstName, firstNameIndex) =>
-                          index === firstNameIndex
-                            ? !visibleFirstNames[index]
-                            : firstName,
-                        ),
-                      )
-                    }
-                  />
-                  <input
-                    readOnly
+                  >
+                    <input
+                      readOnly
+                      style={{
+                        color:
+                          getResults[index]?.firstName !==
+                            shuffledPeople[index]?.firstName && 'red',
+                      }}
+                      value={
+                        visibleFirstNames[index]
+                          ? shuffledPeople[index]?.firstName
+                          : getResults[index]?.firstName
+                      }
+                    />
+                    <Eye
+                      style={{
+                        position: 'absolute',
+                        top: '.4rem',
+                        right: '.5rem',
+                        width: '1.5rem',
+                      }}
+                      onClick={() =>
+                        setVisibleFirstNames((firstNames) =>
+                          firstNames?.map((firstName, firstNameIndex) =>
+                            index === firstNameIndex
+                              ? !visibleFirstNames[index]
+                              : firstName,
+                          ),
+                        )
+                      }
+                    />
+                  </div>
+                  <div
                     style={{
-                      color:
-                        getResults[index]?.lastName !==
-                          shuffledPeople[index]?.lastName && 'red',
+                      position: 'relative',
                     }}
-                    value={
-                      visibleLastNames[index]
-                        ? shuffledPeople[index]?.lastName
-                        : getResults[index]?.lastName
-                    }
-                    onClick={() =>
-                      setVisibleLastNames((lastNames) =>
-                        lastNames?.map((lastName, lastNameIndex) =>
-                          index === lastNameIndex
-                            ? !visibleLastNames[index]
-                            : lastName,
-                        ),
-                      )
-                    }
-                  />
+                  >
+                    <input
+                      readOnly
+                      style={{
+                        color:
+                          getResults[index]?.lastName !==
+                            shuffledPeople[index]?.lastName && 'red',
+                      }}
+                      value={
+                        visibleLastNames[index]
+                          ? shuffledPeople[index]?.lastName
+                          : getResults[index]?.lastName
+                      }
+                    />
+                    <Eye
+                      style={{
+                        position: 'absolute',
+                        top: '.4rem',
+                        right: '.5rem',
+                        width: '1.5rem',
+                      }}
+                      onClick={() =>
+                        setVisibleLastNames((lastNames) =>
+                          lastNames?.map((lastName, lastNameIndex) =>
+                            index === lastNameIndex
+                              ? !visibleLastNames[index]
+                              : lastName,
+                          ),
+                        )
+                      }
+                    />
+                  </div>
                 </form>
               </article>
             )

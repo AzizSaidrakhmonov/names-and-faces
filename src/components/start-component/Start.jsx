@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useGameContext } from "../../context/GameContext"
 import "./Start.css"
 

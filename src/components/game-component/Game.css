@@ -15,11 +15,21 @@ body {
   box-sizing: border-box;
 }
 
+
+.people {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 1rem auto;
+}
+
 .top {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 2rem;
+  margin: .5rem;
 }
 
 .top p {
@@ -27,21 +37,18 @@ body {
   font-weight: 600;
 }
 
-.people {
-  max-width: 90vw;
-  margin: .5rem auto;
-}
-
 .people-image {
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
   flex-wrap: wrap;
-  gap: .8rem;
-  margin-top: .5rem;
+  margin: .5rem 0;
 }
 
 
 article {
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--primary-color);
   border-radius: var(--border-radius);
   padding: 1.5rem;
@@ -57,7 +64,7 @@ article img {
 }
 
 article h4 {
-  margin-bottom: .83rem;
+  margin: .75rem 0;
   font-size: 1.5rem;
   color: var(--primary-color);
 }
@@ -67,11 +74,11 @@ article h4 {
   justify-content: center;
   flex-direction: column;
   gap: 1rem;
-  margin: .2rem 0;
+  margin: .5rem 0;
 }
 
 input {
-  padding: .3rem;
+  padding: .5rem;
   width: 200px;
   border: 1px solid var(--primary-color);
   border-radius: var(--border-radius);
@@ -84,13 +91,13 @@ input:focus {
 .indicator {
   display: flex;
   justify-content: center;
-  margin: .5rem;
 }
 
 .control-buttons {
   display: flex;
   justify-content: center;
   gap: 1rem;
+  margin: .5rem 0;
 }
 
 .first-button, .prev-button, .next-button {
@@ -99,7 +106,7 @@ input:focus {
   border-radius: var(--border-radius);
   cursor: pointer;
   color: #fff;
-  padding: .8rem;
+  padding: .5rem;
 }
 
 .first-button:focus, .prev-button:focus, .next-button:focus {
