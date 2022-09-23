@@ -1,7 +1,15 @@
+:root {
+    --font-family: sans-serif;
+    --primary-color: #2563eb;
+    --border-radius: .5rem;
+}
+
 .navbar {
-    background: green;
-    padding: 1rem;
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    font-size: 1.5rem;
+    background-color: var(--primary-color);
+    padding: .5rem 0;
+    color: #fff;
+    gap: 2rem;
 }

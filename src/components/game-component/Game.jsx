@@ -1,15 +1,23 @@
-import React from 'react'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious'
-import RefreshIcon from '@mui/icons-material/Refresh'
+import React, { useState, useEffect } from 'react'
 import './Game.css'
 import { useGameContext } from '../../context/GameContext'
+import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
+import { ArrowLeft, ArrowRight, Rewind } from 'react-feather'
 
 const Game = () => {
   const { people, currentPerson, setCurrentPerson } = useGameContext()
+  const [seconds, setSeconds] = useState(60)
+  const navigate = useNavigate()
 
-  // Control Buttons
+  useEffect(() => {
+    if (seconds > 0) {
+      setTimeout(() => setSeconds(seconds - 1), 1000)
+    } else {
+      navigate('/answers')
+    }
+  })
+
   const nextPage = () => {
     setCurrentPerson((oldPage) => {
       let nextPage = oldPage + 1
@@ -36,71 +44,37 @@ const Game = () => {
 
   return (
     <section className="people">
-        <div className="people-image">
-          <article>
-            <img
-              src={people[currentPerson-1]?.img}
-              alt={people[currentPerson-1]?.firstName}
-            />
-            <h4>{people[currentPerson-1]?.firstName}</h4>
-            <h4>{people[currentPerson-1]?.lastName}</h4>
-          </article>
-        </div>
-        <div className="indicator">
-          <span>{currentPerson}</span>/<span>{people.length}</span>
-        </div>
-        <div className="control-buttons">
-          <SkipPreviousIcon
-            className="first-button"
-            onClick={firstPage}
-            sx={{
-              fontSize: '3rem',
-              backgroundColor: 'green',
-              color: 'white',
-              borderRadius: '.8rem',
-              padding: '.4rem',
-              cursor: 'pointer',
-            }}
+      <div className="top">
+        <h3>{seconds} s</h3>
+        <p>Let's Recall</p>
+        <Link to="/answers" style={{ textDecoration: 'none' }}>
+          Finish
+        </Link>
+      </div>
+      <div className="people-image">
+        <article>
+          <img
+            src={people[currentPerson - 1]?.img}
+            alt={people[currentPerson - 1]?.firstName}
           />
-          <RefreshIcon
-            className="refresh-button"
-            onClick={() => {
-              window.location.reload()
-            }}
-            sx={{
-              fontSize: '3rem',
-              backgroundColor: 'green',
-              color: 'white',
-              borderRadius: '.8rem',
-              padding: '.4rem',
-              cursor: 'pointer',
-            }}
-          />
-          <ArrowBackIcon
-            className="prev-button"
-            onClick={prevPage}
-            sx={{
-              fontSize: '3rem',
-              backgroundColor: 'green',
-              color: 'white',
-              borderRadius: '.8rem',
-              padding: '.4rem',
-              cursor: 'pointer',
-            }}
-          />
-          <ArrowForwardIcon
-            className="next-button"
-            onClick={nextPage}
-            sx={{
-              fontSize: '3rem',
-              backgroundColor: 'green',
-              color: 'white',
-              borderRadius: '.8rem',
-              padding: '.4rem',
-              cursor: 'pointer',
-            }}
-          />
-        </div>
+          <h4>{people[currentPerson - 1]?.firstName}</h4>
+          <h4>{people[currentPerson - 1]?.lastName}</h4>
+        </article>
+      </div>
+      <div className="indicator">
+        <span>{currentPerson}</span>/<span>{people.length}</span>
+      </div>
+      <div className="control-buttons">
+        <button onClick={firstPage} className="first-button">
+          <Rewind />
+        </button>
+        <button onClick={prevPage} className="prev-button">
+          <ArrowLeft />
+        </button>
+        <button onClick={nextPage} className="next-button">
+          <ArrowRight />
+        </button>
+      </div>
     </section>
   )
 }

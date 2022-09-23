@@ -1,17 +1,27 @@
-import React from 'react'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious'
-import RefreshIcon from '@mui/icons-material/Refresh'
+import React, { useState } from 'react'
 import '../game-component/Game.css'
 import { useGameContext } from '../../context/GameContext'
+import { ArrowLeft, ArrowRight, Rewind } from 'react-feather'
 
 const Result = () => {
-  const { people, currentPerson, setCurrentPerson, answers } = useGameContext()
+  const {
+    people,
+    shuffledPeople,
+    currentPerson3,
+    setCurrentPerson3,
+    getResults,
+  } = useGameContext()
 
-  // Control Buttons
+  const [visibleFirstNames, setVisibleFirstNames] = useState(
+    Array(getResults?.length).fill(false),
+  )
+
+  const [visibleLastNames, setVisibleLastNames] = useState(
+    Array(getResults?.length).fill(false),
+  )
+
   const nextPage = () => {
-    setCurrentPerson((oldPage) => {
+    setCurrentPerson3((oldPage) => {
       let nextPage = oldPage + 1
       if (nextPage > people?.length - 1) {
         nextPage = 1
@@ -21,7 +31,7 @@ const Result = () => {
   }
 
   const prevPage = () => {
-    setCurrentPerson((oldPage) => {
+    setCurrentPerson3((oldPage) => {
       let prevPage = oldPage - 1
       if (prevPage < 1) {
         prevPage = 1
@@ -31,41 +41,68 @@ const Result = () => {
   }
 
   const firstPage = () => {
-    setCurrentPerson(1)
+    setCurrentPerson3(1)
   }
 
   return (
     <section className="people">
+      <div className="top">
+        <p>Your Result</p>
+      </div>
       <div className="people-image">
-        {answers.map((answer, index) => {
-          if (index === currentPerson - 1) {
+        {getResults?.map((result, index) => {
+          if (index === currentPerson3 - 1) {
             return (
               <article key={index}>
                 <img
-                  src={answers[index]?.img}
-                  alt={answers[index]?.firstName}
+                  src={getResults[index]?.img}
+                  alt={getResults[index]?.firstName}
                 />
 
                 <form action="" className="form">
                   <input
                     readOnly
-                    placeholder={answers[index]?.firstName}
                     style={{
                       color:
-                        answers[index]?.firstName !==
-                          people[index]?.firstName && 'red',
+                        getResults[index]?.firstName !==
+                          shuffledPeople[index]?.firstName && 'red',
                     }}
-                    value={answers[index]?.firstName}
+                    value={
+                      visibleFirstNames[index]
+                        ? shuffledPeople[index]?.firstName
+                        : getResults[index]?.firstName
+                    }
+                    onClick={() =>
+                      setVisibleFirstNames((firstNames) =>
+                        firstNames?.map((firstName, firstNameIndex) =>
+                          index === firstNameIndex
+                            ? !visibleFirstNames[index]
+                            : firstName,
+                        ),
+                      )
+                    }
                   />
                   <input
                     readOnly
-                    placeholder={answers[index]?.lastName}
                     style={{
                       color:
-                        answers[index]?.lastName !== people[index]?.lastName &&
-                        'red',
+                        getResults[index]?.lastName !==
+                          shuffledPeople[index]?.lastName && 'red',
                     }}
-                    value={answers[index]?.lastName}
+                    value={
+                      visibleLastNames[index]
+                        ? shuffledPeople[index]?.lastName
+                        : getResults[index]?.lastName
+                    }
+                    onClick={() =>
+                      setVisibleLastNames((lastNames) =>
+                        lastNames?.map((lastName, lastNameIndex) =>
+                          index === lastNameIndex
+                            ? !visibleLastNames[index]
+                            : lastName,
+                        ),
+                      )
+                    }
                   />
                 </form>
               </article>
@@ -76,59 +113,18 @@ const Result = () => {
         })}
       </div>
       <div className="indicator">
-        <span>{currentPerson}</span>/<span>{people.length}</span>
+        <span>{currentPerson3}</span>/<span>{people.length}</span>
       </div>
       <div className="control-buttons">
-        <SkipPreviousIcon
-          className="first-button"
-          onClick={firstPage}
-          sx={{
-            fontSize: '3rem',
-            backgroundColor: 'green',
-            color: 'white',
-            borderRadius: '.8rem',
-            padding: '.4rem',
-            cursor: 'pointer',
-          }}
-        />
-        <RefreshIcon
-          className="refresh-button"
-          onClick={() => {
-            window.location.reload()
-          }}
-          sx={{
-            fontSize: '3rem',
-            backgroundColor: 'green',
-            color: 'white',
-            borderRadius: '.8rem',
-            padding: '.4rem',
-            cursor: 'pointer',
-          }}
-        />
-        <ArrowBackIcon
-          className="prev-button"
-          onClick={prevPage}
-          sx={{
-            fontSize: '3rem',
-            backgroundColor: 'green',
-            color: 'white',
-            borderRadius: '.8rem',
-            padding: '.4rem',
-            cursor: 'pointer',
-          }}
-        />
-        <ArrowForwardIcon
-          className="next-button"
-          onClick={nextPage}
-          sx={{
-            fontSize: '3rem',
-            backgroundColor: 'green',
-            color: 'white',
-            borderRadius: '.8rem',
-            padding: '.4rem',
-            cursor: 'pointer',
-          }}
-        />
+        <button onClick={firstPage} className="first-button">
+          <Rewind />
+        </button>
+        <button onClick={prevPage} className="prev-button">
+          <ArrowLeft />
+        </button>
+        <button onClick={nextPage} className="next-button">
+          <ArrowRight />
+        </button>
       </div>
     </section>
   )

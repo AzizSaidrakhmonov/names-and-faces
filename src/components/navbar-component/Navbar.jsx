@@ -6,14 +6,15 @@ const Navbar = () => {
   return (
     <div className='navbar'>
         <Link to='/' style={{textDecoration: 'none', color: '#fff'}}>
-            Game
+            {'<'}
         </Link>
-        <Link to='/answers' style={{textDecoration: 'none', color: '#fff'}}>
+        {/* <Link to='/answers' style={{textDecoration: 'none', color: '#fff'}}>
             Answers
         </Link>
         <Link to='/results' style={{textDecoration: 'none', color: '#fff'}}>
             Results
-        </Link>
+        </Link> */}
+        <h4>Names & Faces</h4>
     </div>
   )
 }

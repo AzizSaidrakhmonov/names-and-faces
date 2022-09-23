@@ -2,14 +2,15 @@ import React, { useState, useEffect, useContext } from 'react'
 import { peopleImages } from '../data/faces/faces'
 import { firstName, lastName } from '../data/names/names'
 
-
 const GameContext = React.createContext(false)
 
 export const GameContextProvider = ({ children }) => {
-
   const [people, setPeople] = useState([])
+  const [shuffledPeople, setShuffledPeople] = useState([])
   const [currentPerson, setCurrentPerson] = useState(1)
-  
+  const [currentPerson2, setCurrentPerson2] = useState(1)
+  const [currentPerson3, setCurrentPerson3] = useState(1)
+
   const [firstNames, setFirstNames] = useState(() => Array(50).fill(''))
   const [lastNames, setLastNames] = useState(() => Array(50).fill(''))
 
@@ -60,7 +61,9 @@ export const GameContextProvider = ({ children }) => {
     allUniqueImages = [...uniqueMaleImages]
   } else {
     allUniqueImages = [
-      ...filteredMaleImages.concat(filteredFemaleImages?.slice(0, uniqueLength)),
+      ...filteredMaleImages.concat(
+        filteredFemaleImages?.slice(0, uniqueLength),
+      ),
     ]
   }
 
@@ -102,42 +105,49 @@ export const GameContextProvider = ({ children }) => {
     }
   }
 
-  let shuffled = result
+  let shuffled1 = result
     .map((value) => ({ value, sort: Math.random() }))
     .sort((a, b) => a.sort - b.sort)
     .map(({ value }) => value)
 
-  const answers = []
+  let shuffled2 = result
+    .map((value) => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value)
 
-  for(let i=0; i<people.length; i++){
-    answers.push({
-      img: people[i]?.img,
-      firstName: firstNames[i],
-      lastName: lastNames[i],
+  const getResults = []
+
+  for (let i = 0; i < shuffledPeople.length; i++) {
+    getResults.push({
+      img: shuffledPeople[i]?.img,
+      firstName: firstNames[i].trim(),
+      lastName: lastNames[i].trim(),
     })
   }
 
   useEffect(() => {
-    setPeople(shuffled)
+    setPeople(shuffled1)
+    setShuffledPeople(shuffled2)
   }, [])
-  
-const value = {
-  people,
-  setPeople,
-  currentPerson,
-  setCurrentPerson,
-  firstNames,
-  setFirstNames,
-  lastNames,
-  setLastNames,
-  answers
-}
 
-return (
-    <GameContext.Provider value={value}>
-        {children}
-    </GameContext.Provider>
-)
+  const value = {
+    people,
+    setPeople,
+    currentPerson,
+    setCurrentPerson,
+    currentPerson2,
+    setCurrentPerson2,
+    currentPerson3,
+    setCurrentPerson3,
+    firstNames,
+    setFirstNames,
+    lastNames,
+    setLastNames,
+    shuffledPeople,
+    getResults,
+  }
+
+  return <GameContext.Provider value={value}>{children}</GameContext.Provider>
 }
 
 export const useGameContext = () => useContext(GameContext)
