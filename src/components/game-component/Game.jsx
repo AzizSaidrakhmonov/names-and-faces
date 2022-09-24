@@ -22,7 +22,7 @@ const Game = () => {
       if (seconds > 0) {
         setTimeout(() => setSeconds(seconds - 1), 1000)
       } else {
-        // navigate('/answers')
+        navigate('/answers')
       }
     }
   })
