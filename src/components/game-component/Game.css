@@ -16,12 +16,39 @@ body {
 }
 
 
+
+.screen-countdown {
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.screen-countdown h3 {
+  font-family: var(--font-family);
+  font-size: 1.5rem;
+}
+
+.screen-countdown span {
+  font-family: var(--font-family);
+  font-size: 2rem;
+}
+
 .people {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   margin: 1rem auto;
+}
+
+.background-disabled {
+  display: none;
+}
+
+.background-disabled {
+  display: block;
 }
 
 .top {

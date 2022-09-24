@@ -11,13 +11,6 @@ const Result = () => {
     setCurrentPerson3,
     getResults,
   } = useGameContext()
-  const [count, setCount] = useState(100)
-
-  useEffect(() => {
-    getResults[currentPerson3 - 1].firstName ===
-      shuffledPeople[currentPerson3 - 1].firstName && setCount(count - 1)
-      console.log(count, 'count')
-  }, [])
 
   const [visibleFirstNames, setVisibleFirstNames] = useState(
     Array(getResults?.length).fill(false),
@@ -50,24 +43,6 @@ const Result = () => {
   const firstPage = () => {
     setCurrentPerson3(1)
   }
-
-  // const f = (el, i) => {
-  //   setCount(() => {
-  //     if (
-  //       getResults[currentPerson3 - 1]?.firstName ===
-  //         shuffledPeople[currentPerson3 - 1]?.firstName &&
-  //       i === currentPerson3 - 1
-  //     ) {
-  //       count + 1
-  //     } else {
-  //       count
-  //     }
-
-  //     return f
-  //   })
-  // }
-
-  // console.log(count)
 
   return (
     <section className="people">
@@ -109,6 +84,7 @@ const Result = () => {
                         top: '.4rem',
                         right: '.5rem',
                         width: '1.5rem',
+                        cursor: 'pointer'
                       }}
                       onClick={() =>
                         setVisibleFirstNames((firstNames) =>
@@ -145,6 +121,7 @@ const Result = () => {
                         top: '.4rem',
                         right: '.5rem',
                         width: '1.5rem',
+                        cursor: 'pointer'
                       }}
                       onClick={() =>
                         setVisibleLastNames((lastNames) =>
