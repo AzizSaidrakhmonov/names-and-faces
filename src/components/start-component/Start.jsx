@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { useGameContext } from "../../context/GameContext"
-import "./Start.css"
+import React, { useCallback, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useGameContext } from '../../context/GameContext'
+import './Start.css'
 
 const blobToBase64 = (blob) =>
   new Promise((resolve, reject) => {
@@ -14,7 +14,14 @@ const blobToBase64 = (blob) =>
 const Start = () => {
   const [imagesLoading, setImagesLoading] = useState(false)
 
-  const { people, setPeople, setShuffledPeople } = useGameContext()
+  const {
+    people,
+    setPeople,
+    setShuffledPeople,
+    setCountDown,
+    setMinutesForRecall,
+    setMinutesForAnswer
+  } = useGameContext()
 
   const [imagesFetched, setImagesFetched] = useState(0)
 
@@ -36,8 +43,8 @@ const Start = () => {
             resolve({ ...person, img: url })
 
             setImagesFetched((fetched) => fetched + 1)
-          })
-      )
+          }),
+      ),
     )
 
     setShuffledPeople((shuffledPeople) =>
@@ -45,27 +52,49 @@ const Start = () => {
         const { img } = updatedPeople.find(
           (updatedPerson) =>
             person.firstName === updatedPerson.firstName &&
-            person.lastName === updatedPerson.lastName
+            person.lastName === updatedPerson.lastName,
         )
 
         return { ...person, img }
-      })
+      }),
     )
 
     setPeople(updatedPeople)
 
-    navigate("/game")
-
-    // navigate("/game")
+    navigate('/game')
   }, [navigate, people, setPeople])
 
   return (
-    <div className="start-button">
-      <button onClick={handleNavigate} disabled={imagesLoading}>
-        {imagesLoading
-          ? `Loading images (${imagesFetched} / ${people.length})`
-          : "Start"}
-      </button>
+    <div className="settings">
+      <form className="time-settings">
+        <label htmlFor="">Boshlang'ich vaqtni kiriting</label>
+        <input
+          type="number"
+          onChange={(e) => setCountDown(e.target.value)}
+          placeholder="Standart vaqt 5 soniya"
+        />
+
+        <label htmlFor=""> Eslab qolish vaqtini kiriting</label>
+        <input
+          type="number"
+          onChange={(e) => setMinutesForRecall(e.target.value)}
+          placeholder="Standart vaqt 5 daqiqa"
+        />
+
+        <label htmlFor="">Javob berish vaqtini kiriting</label>
+        <input
+          type="number"
+          onChange={(e) => setMinutesForAnswer(e.target.value)}
+          placeholder="Standart vaqt 5 daqiqa "
+        />
+      </form>
+      <div className="start-button">
+        <button onClick={handleNavigate} disabled={imagesLoading}>
+          {imagesLoading
+            ? `Loading images (${imagesFetched} / ${people.length})`
+            : 'Start'}
+        </button>
+      </div>
     </div>
   )
 }

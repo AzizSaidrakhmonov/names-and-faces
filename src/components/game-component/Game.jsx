@@ -6,24 +6,31 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Rewind } from 'react-feather'
 
 const Game = () => {
-  const { people, currentPerson, setCurrentPerson } = useGameContext()
-  const [seconds, setSeconds] = useState(60)
-  const [countDown, setCountDown] = useState(5)
+  const { people, currentPerson, setCurrentPerson, countDown, setCountDown, minutesForRecall, setMinutesForRecall } = useGameContext()
   const navigate = useNavigate()
+
+  const [seconds, setSeconds] = useState(0)
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (countDown < 0) {
+        if (seconds > 0) {
+          setSeconds((seconds) => seconds - 1)
+        } else if (seconds === 0) {
+          if (minutesForRecall === 0) {
+            navigate('/answers')
+          } else {
+            setMinutesForRecall((minutesForRecall) => minutesForRecall - 1)
+            setSeconds(59)
+          }
+        }
+      }
+    }, 1000)
+  }, [countDown, seconds, minutesForRecall, setSeconds, setMinutesForRecall, navigate])
 
   useEffect(() => {
     if (countDown >= 0) {
       setTimeout(() => setCountDown(countDown - 1), 1000)
-    }
-  })
-
-  useEffect(() => {
-    if (countDown <= 0) {
-      if (seconds > 0) {
-        setTimeout(() => setSeconds(seconds - 1), 1000)
-      } else {
-        navigate('/answers')
-      }
     }
   })
 
@@ -53,26 +60,37 @@ const Game = () => {
 
   return (
     <div>
-      <div className='screen-countdown' style={{display: countDown >= 0 ? 'block' : 'none'}}>
+      <div
+        className="screen-countdown"
+        style={{ display: countDown > 0 ? 'block' : 'none' }}
+      >
         <h3>Memorization starts in: </h3>
         <span>{countDown} s</span>
       </div>
-      <section style={{display: countDown >= 0 ? 'none' : 'flex'}} className='people'>
+      <section
+        style={{ display: countDown > 0 ? 'none' : 'flex' }}
+        className="people"
+      >
         <div className="top">
-          <h3>{seconds} s</h3>
-          <p>Let's Recall</p>
+          {minutesForRecall === 0 && seconds === 0 ? null : (
+            <h3 className='time'>
+              {minutesForRecall}m {seconds < 10 ? `0${seconds}` : seconds}s
+            </h3>
+          )}
+          <p>Recall</p>
           <Link to="/answers" style={{ textDecoration: 'none' }}>
             Finish
           </Link>
         </div>
-        <div className="people-image">
-          <article>
+        <div className="people-cards">
+          <article className='people-card'>
             <img
+              className='people-card__image'
               src={people[currentPerson - 1]?.img}
               alt={people[currentPerson - 1]?.firstName}
             />
-            <h4>{people[currentPerson - 1]?.firstName}</h4>
-            <h4>{people[currentPerson - 1]?.lastName}</h4>
+            <h4 className='people-card__first-name'>{people[currentPerson - 1]?.firstName}</h4>
+            <h4 className='people-card__last-name'>{people[currentPerson - 1]?.lastName}</h4>
           </article>
         </div>
         <div className="indicator">

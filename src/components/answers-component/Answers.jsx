@@ -14,18 +14,27 @@ const Answers = () => {
     lastNames,
     setFirstNames,
     setLastNames,
+    minutesForAnswer, 
+    setMinutesForAnswer
   } = useGameContext()
 
-  const [seconds, setSeconds] = useState(60)
   const navigate = useNavigate()
+  const [seconds, setSeconds] = useState(0)
 
   useEffect(() => {
-    if (seconds > 0) {
-      setTimeout(() => setSeconds(seconds - 1), 1000)
-    } else {
-      navigate('/results')
-    }
-  })
+    setTimeout(() => {
+      if (seconds > 0) {
+        setSeconds((seconds) => seconds - 1)
+      } else if (seconds === 0) {
+        if (minutesForAnswer === 0) {
+          navigate('/results')
+        } else {
+          setMinutesForAnswer((minutesForAnswer) => minutesForAnswer - 1)
+          setSeconds(59)
+        }
+      }
+    }, 1000)
+  }, [minutesForAnswer, seconds, setMinutesForAnswer, setSeconds, navigate])
 
   const nextPage = (e) => {
     e.preventDefault()
@@ -72,29 +81,36 @@ const Answers = () => {
   return (
     <section className="people">
       <div className="top">
-        <h3>{seconds} s</h3>
+        {minutesForAnswer === 0 && seconds === 0 ? null : (
+          <h3 className='time'>
+            {minutesForAnswer}m {seconds < 10 ? `0${seconds}` : seconds}s
+          </h3>
+        )}
         <p>Answer</p>
         <Link to="/results" style={{ textDecoration: 'none' }}>
           Finish
         </Link>
       </div>
-      <div className="people-image">
+      <div className="people-cards">
         {shuffledPeople?.map((person, index) => {
           if (index === currentPerson2 - 1) {
             return (
-              <article key={index}>
+              <article className="people-card" key={index}>
                 <img
+                  className="people-card__image"
                   src={shuffledPeople[index]?.img}
                   alt={shuffledPeople[index]?.firstName}
                 />
-                <form action="" className="form">
+                <form className="people-card__form">
                   <input
+                    className="people-card__form-input"
                     type="text"
                     placeholder="Ism"
                     value={firstNames[index]}
                     onChange={(e) => handleFirstName(e, index)}
                   />
                   <input
+                    className="people-card__form-input"
                     type="text"
                     placeholder="Familiya"
                     value={lastNames[index]}

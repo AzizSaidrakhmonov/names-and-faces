@@ -12,6 +12,7 @@ const Result = () => {
     getResults,
   } = useGameContext()
 
+
   const [visibleFirstNames, setVisibleFirstNames] = useState(
     Array(getResults?.length).fill(false),
   )
@@ -49,17 +50,18 @@ const Result = () => {
       <div className="top">
         <p>Your Result {}</p>
       </div>
-      <div className="people-image">
+      <div className="people-cards">
         {getResults?.map((result, index) => {
           if (index === currentPerson3 - 1) {
             return (
-              <article key={index}>
+              <article className="people-card" key={index}>
                 <img
+                  className="people-card__image"
                   src={getResults[index]?.img}
                   alt={getResults[index]?.firstName}
                 />
 
-                <form action="" className="form">
+                <form className="people-card__form">
                   <div
                     style={{
                       position: 'relative',
@@ -67,6 +69,7 @@ const Result = () => {
                   >
                     <input
                       readOnly
+                      className="people-card__form-input"
                       style={{
                         color:
                           getResults[index]?.firstName !==
@@ -79,13 +82,7 @@ const Result = () => {
                       }
                     />
                     <Eye
-                      style={{
-                        position: 'absolute',
-                        top: '.4rem',
-                        right: '.5rem',
-                        width: '1.5rem',
-                        cursor: 'pointer'
-                      }}
+                      className="people-card__form-preview"
                       onClick={() =>
                         setVisibleFirstNames((firstNames) =>
                           firstNames?.map((firstName, firstNameIndex) =>
@@ -104,6 +101,7 @@ const Result = () => {
                   >
                     <input
                       readOnly
+                      className="people-card__form-input"
                       style={{
                         color:
                           getResults[index]?.lastName !==
@@ -116,13 +114,7 @@ const Result = () => {
                       }
                     />
                     <Eye
-                      style={{
-                        position: 'absolute',
-                        top: '.4rem',
-                        right: '.5rem',
-                        width: '1.5rem',
-                        cursor: 'pointer'
-                      }}
+                      className="people-card__form-preview"
                       onClick={() =>
                         setVisibleLastNames((lastNames) =>
                           lastNames?.map((lastName, lastNameIndex) =>
