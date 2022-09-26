@@ -118,10 +118,10 @@ export const GameContextProvider = ({ children }) => {
     .sort((a, b) => a.sort - b.sort)
     .map(({ value }) => value)
 
-  const getResults = []
+  const results = []
 
   for (let i = 0; i < shuffledPeople.length; i++) {
-    getResults.push({
+    results.push({
       img: shuffledPeople[i]?.img,
       firstName: firstNames[i].trim(),
       lastName: lastNames[i].trim(),
@@ -148,7 +148,7 @@ export const GameContextProvider = ({ children }) => {
     lastNames,
     setLastNames,
     shuffledPeople,
-    getResults,
+    results,
     countDown,
     setCountDown,
     minutesForRecall,

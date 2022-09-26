@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import '../game-component/Game.css'
 import { useGameContext } from '../../context/GameContext'
 import { ArrowLeft, ArrowRight, Rewind, Eye } from 'react-feather'
@@ -9,17 +9,21 @@ const Result = () => {
     shuffledPeople,
     currentPerson3,
     setCurrentPerson3,
-    getResults,
+    results,
   } = useGameContext()
 
 
   const [visibleFirstNames, setVisibleFirstNames] = useState(
-    Array(getResults?.length).fill(false),
+    Array(results?.length).fill(false),
   )
 
   const [visibleLastNames, setVisibleLastNames] = useState(
-    Array(getResults?.length).fill(false),
+    Array(results?.length).fill(false),
   )
+
+  const correctFirstNames = results.filter((el,index) => el?.firstName === shuffledPeople[index]?.firstName)
+  const correctLastNames = results.filter((el,index) => el?.lastName === shuffledPeople[index]?.lastName)
+
 
   const nextPage = () => {
     setCurrentPerson3((oldPage) => {
@@ -48,17 +52,17 @@ const Result = () => {
   return (
     <section className="people">
       <div className="top">
-        <p>Your Result {}</p>
+        <p>Your Result: {correctFirstNames.length + correctLastNames.length} correct</p>
       </div>
       <div className="people-cards">
-        {getResults?.map((result, index) => {
+        {results?.map((result, index) => {
           if (index === currentPerson3 - 1) {
             return (
               <article className="people-card" key={index}>
                 <img
                   className="people-card__image"
-                  src={getResults[index]?.img}
-                  alt={getResults[index]?.firstName}
+                  src={results[index]?.img}
+                  alt={results[index]?.firstName}
                 />
 
                 <form className="people-card__form">
@@ -72,13 +76,13 @@ const Result = () => {
                       className="people-card__form-input"
                       style={{
                         color:
-                          getResults[index]?.firstName !==
+                          results[index]?.firstName !==
                             shuffledPeople[index]?.firstName && 'red',
                       }}
                       value={
                         visibleFirstNames[index]
                           ? shuffledPeople[index]?.firstName
-                          : getResults[index]?.firstName
+                          : results[index]?.firstName
                       }
                     />
                     <Eye
@@ -104,13 +108,13 @@ const Result = () => {
                       className="people-card__form-input"
                       style={{
                         color:
-                          getResults[index]?.lastName !==
+                          results[index]?.lastName !==
                             shuffledPeople[index]?.lastName && 'red',
                       }}
                       value={
                         visibleLastNames[index]
                           ? shuffledPeople[index]?.lastName
-                          : getResults[index]?.lastName
+                          : results[index]?.lastName
                       }
                     />
                     <Eye
