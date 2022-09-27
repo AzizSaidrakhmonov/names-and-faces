@@ -78,7 +78,7 @@ const Game = () => {
             </h3>
           )}
           <p>Recall</p>
-          <Link to="/answers" style={{ textDecoration: 'none' }}>
+          <Link to="/answers" style={{ textDecoration: 'none' }} className='finish-button'>
             Finish
           </Link>
         </div>

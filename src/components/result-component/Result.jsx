@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../game-component/Game.css'
 import { useGameContext } from '../../context/GameContext'
 import { ArrowLeft, ArrowRight, Rewind, Eye } from 'react-feather'
@@ -12,6 +12,16 @@ const Result = () => {
     results,
   } = useGameContext()
 
+  const [previewFirstName, setPreviewFirstName] = useState(false)
+  const [previewLastName, setPreviewLastName] = useState(false)
+
+  const handlePreviewFirstName = () => {
+    setPreviewFirstName((current) => !current)
+  }
+
+  const handlePreviewLastName = () => {
+    setPreviewLastName((current) => !current)
+  }
 
   const [visibleFirstNames, setVisibleFirstNames] = useState(
     Array(results?.length).fill(false),
@@ -21,9 +31,12 @@ const Result = () => {
     Array(results?.length).fill(false),
   )
 
-  const correctFirstNames = results.filter((el,index) => el?.firstName === shuffledPeople[index]?.firstName)
-  const correctLastNames = results.filter((el,index) => el?.lastName === shuffledPeople[index]?.lastName)
-
+  const correctFirstNames = results.filter(
+    (el, index) => el?.firstName === shuffledPeople[index]?.firstName,
+  )
+  const correctLastNames = results.filter(
+    (el, index) => el?.lastName === shuffledPeople[index]?.lastName,
+  )
 
   const nextPage = () => {
     setCurrentPerson3((oldPage) => {
@@ -52,7 +65,12 @@ const Result = () => {
   return (
     <section className="people">
       <div className="top">
-        <p>Your Result: {correctFirstNames.length + correctLastNames.length} correct</p>
+        <p>
+          Umumiy: {results.length} ta
+          <br />
+          To'g'ri topilganlar:{' '}
+          {correctFirstNames.length + correctLastNames.length}ta <br />
+        </p>
       </div>
       <div className="people-cards">
         {results?.map((result, index) => {
@@ -75,9 +93,11 @@ const Result = () => {
                       readOnly
                       className="people-card__form-input"
                       style={{
-                        color:
+                        backgroundColor:
                           results[index]?.firstName !==
-                            shuffledPeople[index]?.firstName && 'red',
+                          shuffledPeople[index]?.firstName
+                            ? 'rgb(255, 0, 0, .5)'
+                            : 'rgba(26, 161, 19, .5)',
                       }}
                       value={
                         visibleFirstNames[index]
@@ -87,7 +107,12 @@ const Result = () => {
                     />
                     <Eye
                       className="people-card__form-preview"
-                      onClick={() =>
+                      style={{
+                        backgroundColor: previewFirstName && 'black',
+                        color: previewFirstName && 'white',
+                        padding: previewFirstName && '.1rem',
+                      }}
+                      onClick={() => {
                         setVisibleFirstNames((firstNames) =>
                           firstNames?.map((firstName, firstNameIndex) =>
                             index === firstNameIndex
@@ -95,7 +120,9 @@ const Result = () => {
                               : firstName,
                           ),
                         )
-                      }
+
+                        handlePreviewFirstName()
+                      }}
                     />
                   </div>
                   <div
@@ -107,9 +134,11 @@ const Result = () => {
                       readOnly
                       className="people-card__form-input"
                       style={{
-                        color:
+                        backgroundColor:
                           results[index]?.lastName !==
-                            shuffledPeople[index]?.lastName && 'red',
+                          shuffledPeople[index]?.lastName
+                            ? 'rgb(255, 0, 0, .5)'
+                            : 'rgba(26, 161, 19, .5)',
                       }}
                       value={
                         visibleLastNames[index]
@@ -119,7 +148,12 @@ const Result = () => {
                     />
                     <Eye
                       className="people-card__form-preview"
-                      onClick={() =>
+                      style={{
+                        backgroundColor: previewLastName && 'black',
+                        color: previewLastName && 'white',
+                        padding: previewLastName && '.1rem',
+                      }}
+                      onClick={() => {
                         setVisibleLastNames((lastNames) =>
                           lastNames?.map((lastName, lastNameIndex) =>
                             index === lastNameIndex
@@ -127,7 +161,9 @@ const Result = () => {
                               : lastName,
                           ),
                         )
-                      }
+
+                        handlePreviewLastName()
+                      }}
                     />
                   </div>
                 </form>

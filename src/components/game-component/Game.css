@@ -47,7 +47,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
   margin: .5rem;
 }
 
@@ -57,7 +57,15 @@ body {
 }
 
 .time {
-  font-size: 1.5rem;
+  font-size: 1.7rem;
+}
+
+.finish-button {
+  font-size: 1.2rem;
+  color: #fff;
+  background-color: var(--primary-color);
+  padding: .6rem .8rem;
+  border-radius: var(--border-radius);
 }
 
 .people-cards {
@@ -158,7 +166,7 @@ body {
   outline: none;
 }
 
-@media only screen and (max-width: 540px) {
+@media only screen and (max-width: 390px) {
 
   .screen-countdown h3 {
     font-size: 1.2rem;
@@ -219,3 +227,4 @@ body {
     transform: scale(1);
   }
 }
+

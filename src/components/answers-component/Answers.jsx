@@ -87,7 +87,7 @@ const Answers = () => {
           </h3>
         )}
         <p>Answer</p>
-        <Link to="/results" style={{ textDecoration: 'none' }}>
+        <Link to="/results" style={{ textDecoration: 'none' }} className='finish-button'>
           Finish
         </Link>
       </div>
