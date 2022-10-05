@@ -20,7 +20,7 @@ const Start = () => {
     setShuffledPeople,
     setCountDown,
     setMinutesForRecall,
-    setMinutesForAnswer
+    setMinutesForAnswer,
   } = useGameContext()
 
   const [imagesFetched, setImagesFetched] = useState(0)
@@ -66,34 +66,36 @@ const Start = () => {
 
   return (
     <div className="settings">
-      <form className="time-settings">
-        <label htmlFor="">Boshlang'ich vaqtni kiriting</label>
-        <input
-          type="number"
-          onChange={(e) => setCountDown(e.target.value)}
-          placeholder="Standart vaqt 5 soniya"
-        />
+      <div className="container">
+        <form className="time-settings">
+          <label htmlFor="">Boshlang'ich vaqtni kiriting</label>
+          <input
+            type="number"
+            onChange={(e) => setCountDown(e.target.value)}
+            placeholder="Standart vaqt 5 soniya"
+          />
 
-        <label htmlFor=""> Eslab qolish vaqtini kiriting</label>
-        <input
-          type="number"
-          onChange={(e) => setMinutesForRecall(e.target.value)}
-          placeholder="Standart vaqt 5 daqiqa"
-        />
+          <label htmlFor=""> Eslab qolish vaqtini kiriting</label>
+          <input
+            type="number"
+            onChange={(e) => setMinutesForRecall(e.target.value)}
+            placeholder="Standart vaqt 5 daqiqa"
+          />
 
-        <label htmlFor="">Javob berish vaqtini kiriting</label>
-        <input
-          type="number"
-          onChange={(e) => setMinutesForAnswer(e.target.value)}
-          placeholder="Standart vaqt 5 daqiqa "
-        />
-      </form>
-      <div className="start-button">
-        <button onClick={handleNavigate} disabled={imagesLoading}>
-          {imagesLoading
-            ? `Loading images (${imagesFetched} / ${people.length})`
-            : 'Start'}
-        </button>
+          <label htmlFor="">Javob berish vaqtini kiriting</label>
+          <input
+            type="number"
+            onChange={(e) => setMinutesForAnswer(e.target.value)}
+            placeholder="Standart vaqt 5 daqiqa "
+          />
+        </form>
+        <div className="start-button">
+          <button onClick={handleNavigate} disabled={imagesLoading}>
+            {imagesLoading
+              ? `Loading images (${imagesFetched} / ${people.length})`
+              : 'Start'}
+          </button>
+        </div>
       </div>
     </div>
   )

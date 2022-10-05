@@ -14,6 +14,15 @@ body {
   box-sizing: border-box;
 }
 
+.game,
+.answers,
+.results {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .screen-countdown {
   position: absolute;
   text-align: center;
@@ -32,18 +41,20 @@ body {
   font-size: 2.5rem;
 }
 
-.people {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.game-section,
+.answers-section,
+.results-section {
   flex-direction: column;
 }
 
-.top {
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.game-section__header,
+.answers-section__header,
+.results-section__header {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -51,16 +62,27 @@ body {
   margin: .5rem;
 }
 
-.top p {
+.game-section__header-title,
+.answers-section__header-title {
   font-size: 2rem;
   font-weight: 600;
 }
 
-.time {
+.results-section__header-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.game-section__header-time,
+.answers-section__header-time,
+.results-section__header-time {
   font-size: 1.7rem;
 }
 
-.finish-button {
+.game-section__header-finish,
+.answers-section__header-finish,
+.results-section__header-finish {
   font-size: 1.2rem;
   color: #fff;
   background-color: var(--primary-color);
@@ -68,14 +90,18 @@ body {
   border-radius: var(--border-radius);
 }
 
-.people-cards {
+.game-section__items,
+.answers-section__items,
+.results-section__items {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   flex-wrap: wrap;
 }
 
-.people-card {
+.game-section__item,
+.answers-section__item,
+.results-section__item {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--primary-color);
@@ -83,7 +109,9 @@ body {
   padding: 2rem;
 }
 
-.people-card__image {
+.game-section__item-image,
+.answers-section__item-image,
+.results-section__item-image {
   max-width: 280px;
   height: 280px;
   margin: 0 auto;
@@ -92,7 +120,7 @@ body {
   margin-bottom: 0.75rem;
 }
 
-.people-card__first-name {
+.game-section__item-firstName {
   margin-top: 1.5rem;
   margin-bottom: .5rem;
   font-size: 2rem;
@@ -100,7 +128,7 @@ body {
   text-align: center;
 }
 
-.people-card__last-name {
+.game-section__item-lastName {
   margin-top: .5rem;
   margin-bottom: 1.5rem;
   font-size: 2rem;
@@ -108,7 +136,8 @@ body {
   text-align: center;
 }
 
-.people-card__form {
+.answers-section__item-form,
+.results-section__item-form {
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -116,25 +145,31 @@ body {
   margin: .5rem 0;
 }
 
-.people-card__form-input {
+.answers-section__item-form input,
+.results-section__item-form input {
+  width: 100%;
   font-size: 1.3rem;
   padding: 1rem;
   border: 1px solid var(--primary-color);
   border-radius: var(--border-radius);
 }
 
-.people-card__form-input:focus {
+.answers-section__item-form input:focus,
+.results-section__item-form input:focus {
   outline: none;
 }
 
-.people-card__form-preview {
+.results-section__form-preview {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 50%;
+  right: 0;
+  transform: translateX(-50%) translateY(-50%);
   cursor: pointer;
 }
 
-.indicator {
+.game-section__indicator,
+.answers-section__indicator,
+.results-section__indicator {
   display: flex;
   justify-content: center;
   font-family: var(--font-family);
@@ -142,22 +177,25 @@ body {
   margin: 1.5rem 0 2rem 0;
 }
 
-.control-buttons {
+.game-section__control-buttons,
+.answers-section__control-buttons,
+.results-section__control-buttons {
   display: flex;
   justify-content: center;
-  gap: 4rem;
+  align-items: center;
+  gap: 2.5rem;
 }
 
 .first-button,
 .prev-button,
 .next-button {
+  padding: 1rem;
   border: none;
   background-color: var(--primary-color);
   border-radius: var(--border-radius);
   cursor: pointer;
   color: #fff;
-  padding: .7rem;
-  transform: scale(1.5);
+  user-select: none;
 }
 
 .first-button:focus,
@@ -166,65 +204,74 @@ body {
   outline: none;
 }
 
-@media only screen and (max-width: 390px) {
 
-  .screen-countdown h3 {
-    font-size: 1.2rem;
-  }
 
-  .screen-countdown span {
+@media only screen and (max-width: 380px) {
+
+  .game-section__header-time,
+  .answers-section__header-time {
     font-size: 1.5rem;
   }
 
-  .top p {
-    font-size: 1.2rem;
-  }
-
-  .time {
-    font-size: 1rem;
-  }
-
-  .people-card {
-    padding: 1.5rem;
-  }
-
-  .people-card__image {
-    max-width: 200px;
-    height: 200px;
-  }
-
-
-  .people-card__first-name, .people-card__last-name {
+  .game-section__header-title,
+  .answers-section__header-title {
     font-size: 1.5rem;
   }
 
 
-  .people-card__form-input {
-    font-size: 1rem;
-    padding: .7rem;
-    max-width: 200px;
+  .results-section__header-title {
+    font-size: 1.2rem;
   }
 
-  .people-card__form-preview {
-    top: .5rem;
-    right: .5rem;
+  .game-section__header-finish,
+  .answers-section__header-finish,
+  .results-section__header-finish {
+    font-size: 1rem;
   }
 
+  .game-section__items {
+    gap: .5rem;
+  }
 
-  .indicator {
+  .answers-section__items,
+  .results-section__items {
+    gap: .4rem;
+  }
+
+  .game-section__item,
+  .answers-section__item,
+  .results-section__item {
+    padding: 1rem;
+  }
+
+  .game-section__item-image,
+  .answers-section__item-image,
+  .results-section__item-image {
+    max-width: 230px;
+    height: 230px;
+  }
+
+  .game-section__item-firstName {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .game-section__item-lastName {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .answers-section__item-form input,
+  .results-section__item-form input {
     font-size: 1rem;
+    padding: .5rem;
+  }
+
+  .game-section__indicator,
+  .answers-section__indicator,
+  .results-section__indicator {
+    font-size: 1.2rem;
     margin: .5rem;
   }
 
-  .control-buttons {
-    gap: 1.5rem;
-  }
-
-  .first-button,
-  .prev-button,
-  .next-button {
-    padding: .7rem;
-    transform: scale(1);
-  }
 }
-

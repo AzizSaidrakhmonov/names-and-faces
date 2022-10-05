@@ -5,15 +5,15 @@
 }
 
 .settings {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    gap: 2rem;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .time-settings {
@@ -37,6 +37,10 @@
 
 .time-settings input:focus {
     outline: none;
+}
+
+.start-button {
+    text-align: center;
 }
 
 .start-button button {

@@ -4,6 +4,8 @@ import { useGameContext } from '../../context/GameContext'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Rewind } from 'react-feather'
+import NextPage from '../button-component/NextPage'
+import PrevPage from '../button-component/PrevPage'
 
 const Answers = () => {
   let {
@@ -14,9 +16,12 @@ const Answers = () => {
     lastNames,
     setFirstNames,
     setLastNames,
-    minutesForAnswer, 
-    setMinutesForAnswer
+    minutesForAnswer,
+    setMinutesForAnswer,
   } = useGameContext()
+
+  const { nextAnswersHandlers } = NextPage()
+  const { prevAnswersHandlers } = PrevPage()
 
   const navigate = useNavigate()
   const [seconds, setSeconds] = useState(0)
@@ -36,32 +41,6 @@ const Answers = () => {
     }, 1000)
   }, [minutesForAnswer, seconds, setMinutesForAnswer, setSeconds, navigate])
 
-  const nextPage = (e) => {
-    e.preventDefault()
-    setCurrentPerson2((oldPage) => {
-      let nextPage = oldPage + 1
-      if (nextPage > shuffledPeople?.length - 1) {
-        nextPage = 1
-      }
-      return nextPage
-    })
-  }
-
-  const prevPage = (e) => {
-    e.preventDefault()
-    setCurrentPerson2((oldPage) => {
-      let prevPage = oldPage - 1
-      if (prevPage < 1) {
-        prevPage = 1
-      }
-      return prevPage
-    })
-  }
-
-  const firstPage = () => {
-    setCurrentPerson2(1)
-  }
-
   const handleLastName = (e, index) => {
     setLastNames((lastNames) =>
       lastNames.map((oldValue, currentIndex) =>
@@ -78,67 +57,77 @@ const Answers = () => {
     )
   }
 
+  const firstPage = () => {
+    setCurrentPerson2(1)
+  }
+
   return (
-    <section className="people">
-      <div className="top">
-        {minutesForAnswer === 0 && seconds === 0 ? null : (
-          <h3 className='time'>
-            {minutesForAnswer}m {seconds < 10 ? `0${seconds}` : seconds}s
-          </h3>
-        )}
-        <p>Answer</p>
-        <Link to="/results" style={{ textDecoration: 'none' }} className='finish-button'>
-          Finish
-        </Link>
+    <div className="answers">
+      <div className="container">
+        <div className="answers-section">
+          <div className="answers-section__header">
+            {minutesForAnswer === 0 && seconds === 0 ? null : (
+              <h3 className="answers-section__header-time">
+                {minutesForAnswer}m {seconds < 10 ? `0${seconds}` : seconds}s
+              </h3>
+            )}
+            <p className="answers-section__header-title">Answer</p>
+            <Link
+              to="/results"
+              style={{ textDecoration: 'none' }}
+              className="answers-section__header-finish"
+            >
+              Finish
+            </Link>
+          </div>
+          <div className="answers-section__items">
+            {shuffledPeople?.map((_, index) => {
+              if (index === currentPerson2 - 1) {
+                return (
+                  <article className="answers-section__item" key={index}>
+                    <img
+                      className="answers-section__item-image"
+                      src={shuffledPeople[index]?.img}
+                      alt={shuffledPeople[index]?.firstName}
+                    />
+                    <form className="answers-section__item-form">
+                      <input
+                        type="text"
+                        placeholder="Ism"
+                        value={firstNames[index]}
+                        onChange={(e) => handleFirstName(e, index)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Familiya"
+                        value={lastNames[index]}
+                        onChange={(e) => handleLastName(e, index)}
+                      />
+                    </form>
+                  </article>
+                )
+              } else {
+                return null
+              }
+            })}
+          </div>
+          <div className="answers-section__indicator">
+            <span>{currentPerson2}</span>/<span>{shuffledPeople?.length}</span>
+          </div>
+          <div className="answers-section__control-buttons">
+            <button onClick={firstPage} className="first-button">
+              <Rewind size={32} />
+            </button>
+            <button {...prevAnswersHandlers} className="prev-button">
+              <ArrowLeft size={32} />
+            </button>
+            <button {...nextAnswersHandlers} className="next-button">
+              <ArrowRight size={32} />
+            </button>
+          </div>
+        </div>
       </div>
-      <div className="people-cards">
-        {shuffledPeople?.map((person, index) => {
-          if (index === currentPerson2 - 1) {
-            return (
-              <article className="people-card" key={index}>
-                <img
-                  className="people-card__image"
-                  src={shuffledPeople[index]?.img}
-                  alt={shuffledPeople[index]?.firstName}
-                />
-                <form className="people-card__form">
-                  <input
-                    className="people-card__form-input"
-                    type="text"
-                    placeholder="Ism"
-                    value={firstNames[index]}
-                    onChange={(e) => handleFirstName(e, index)}
-                  />
-                  <input
-                    className="people-card__form-input"
-                    type="text"
-                    placeholder="Familiya"
-                    value={lastNames[index]}
-                    onChange={(e) => handleLastName(e, index)}
-                  />
-                </form>
-              </article>
-            )
-          } else {
-            return null
-          }
-        })}
-      </div>
-      <div className="indicator">
-        <span>{currentPerson2}</span>/<span>{shuffledPeople?.length}</span>
-      </div>
-      <div className="control-buttons">
-        <button onClick={firstPage} className="first-button">
-          <Rewind />
-        </button>
-        <button onClick={prevPage} className="prev-button">
-          <ArrowLeft />
-        </button>
-        <button onClick={nextPage} className="next-button">
-          <ArrowRight />
-        </button>
-      </div>
-    </section>
+    </div>
   )
 }
 
