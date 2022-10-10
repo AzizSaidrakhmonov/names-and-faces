@@ -1,26 +1,104 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { peopleImages } from '../data/faces/faces'
-import { firstName, lastName } from '../data/names/names'
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import { peopleImages } from '../data/faces/FacesData'
+import { firstName, lastName } from '../data/names/NamesData'
 
-const GameContext = React.createContext(false)
+interface PersonWithGender {
+  gender: string
+  img: string
+}
 
-export const GameContextProvider = ({ children }) => {
-  const [people, setPeople] = useState([])
-  const [shuffledPeople, setShuffledPeople] = useState([])
-  const [currentPerson, setCurrentPerson] = useState(1)
-  const [currentPerson2, setCurrentPerson2] = useState(1)
-  const [currentPerson3, setCurrentPerson3] = useState(1)
-  const [countDown, setCountDown] = useState(5)
-  const [minutesForRecall, setMinutesForRecall] = useState(5)
-  const [minutesForAnswer, setMinutesForAnswer] = useState(5)
+interface PersonWithFirstName {
+  gender: string
+  firstName: string
+}
 
-  const [firstNames, setFirstNames] = useState(() => Array(50).fill(''))
-  const [lastNames, setLastNames] = useState(() => Array(50).fill(''))
+interface PersonWithLastName {
+  gender: string
+  lastName: string
+}
 
-  const maleImages = []
-  const femaleImages = []
-  const randomMaleImages = []
-  const randomFemaleImages = []
+interface PersonWithAll {
+  img: string
+  gender: 'male' | 'female'
+  firstName: string
+  lastName: string
+}
+
+interface Person {
+  img: string
+  firstName: string
+  lastName: string
+}
+
+type NameSetter = (names: string[] | ((names: string[]) => string[])) => void
+
+type NumberSetter = (numbers: number | ((numbers: number) => number)) => void
+
+type PersonSetter = (
+  person: Person[] | ((person: Person[]) => Person[]),
+) => void
+
+interface Types {
+  people: Person[]
+  setPeople: PersonSetter
+  shuffledPeople: Person[]
+  setShuffledPeople: PersonSetter
+  currentPageRecall: number
+  setCurrentPageRecall: NumberSetter
+  currentPageAnswers: number
+  setCurrentPageAnswers: NumberSetter
+  currentPageResults: number
+  setCurrentPageResults: NumberSetter
+  countDown: number
+  setCountDown: NumberSetter
+  minutesForRecall: number
+  setMinutesForRecall: NumberSetter
+  minutesForAnswer: number
+  setMinutesForAnswer: NumberSetter
+  firstNames: string[]
+  setFirstNames: NameSetter
+  lastNames: string[]
+  setLastNames: NameSetter
+  results: Person[]
+}
+
+const NamesAndFacesContext = createContext<Types>({} as Types)
+
+export const NamesAndFacesContextProvider = ({
+  children,
+}: {
+  children: ReactNode
+}) => {
+  const [people, setPeople] = useState<Person[]>([])
+  const [shuffledPeople, setShuffledPeople] = useState<Person[]>([])
+  const [currentPageRecall, setCurrentPageRecall] = useState<number>(1)
+  const [currentPageAnswers, setCurrentPageAnswers] = useState<number>(1)
+  const [currentPageResults, setCurrentPageResults] = useState<number>(1)
+  const [countDown, setCountDown] = useState<number>(5)
+  const [minutesForRecall, setMinutesForRecall] = useState<number>(5)
+  const [minutesForAnswer, setMinutesForAnswer] = useState<number>(5)
+
+  const [firstNames, setFirstNames] = useState<string[]>(() =>
+    Array(50).fill(''),
+  )
+  const [lastNames, setLastNames] = useState<string[]>(() => Array(50).fill(''))
+
+  const maleImages: PersonWithGender[] = []
+  const femaleImages: PersonWithGender[] = []
+  const randomMaleImages: PersonWithGender[] = []
+  const randomFemaleImages: PersonWithGender[] = []
+  const result: PersonWithAll[] = []
+  const results: Person[] = []
+  let firstNameMale: PersonWithFirstName[] = []
+  let firstNameFemale: PersonWithFirstName[] = []
+  let lastNameMale: PersonWithLastName[] = []
+  let lastNameFemale: PersonWithLastName[] = []
 
   for (let i = 0; i < peopleImages.length / 2; i++) {
     maleImages.push(peopleImages[i])
@@ -51,7 +129,7 @@ export const GameContextProvider = ({ children }) => {
   })
 
   let uniqueLength = maleImages.length - uniqueMaleImages.length
-  let allUniqueImages = []
+  let allUniqueImages: PersonWithGender[] = []
 
   let filteredMaleImages = uniqueMaleImages.filter(
     (x) => !uniqueFemaleImages.includes(x),
@@ -69,12 +147,6 @@ export const GameContextProvider = ({ children }) => {
       ),
     ]
   }
-
-  const result = []
-  let firstNameMale = []
-  let firstNameFemale = []
-  let lastNameMale = []
-  let lastNameFemale = []
 
   for (let i = 0; i < allUniqueImages.length; i++) {
     if (allUniqueImages[i].gender === 'male') {
@@ -95,12 +167,14 @@ export const GameContextProvider = ({ children }) => {
 
     if (allUniqueImages[i].gender === 'male') {
       result.push({
+        gender: 'male',
         img: allUniqueImages[i].img,
         firstName: firstNameMale[randomIndexOfFirstNames].firstName,
         lastName: lastNameMale[randomIndexOfLastNames].lastName,
       })
     } else {
       result.push({
+        gender: 'female',
         img: allUniqueImages[i].img,
         firstName: firstNameFemale[randomIndexOfFirstNames].firstName,
         lastName: lastNameFemale[randomIndexOfLastNames].lastName,
@@ -117,8 +191,6 @@ export const GameContextProvider = ({ children }) => {
     .map((value) => ({ value, sort: Math.random() }))
     .sort((a, b) => a.sort - b.sort)
     .map(({ value }) => value)
-
-  const results = []
 
   for (let i = 0; i < shuffledPeople.length; i++) {
     results.push({
@@ -137,12 +209,12 @@ export const GameContextProvider = ({ children }) => {
     people,
     setPeople,
     setShuffledPeople,
-    currentPerson,
-    setCurrentPerson,
-    currentPerson2,
-    setCurrentPerson2,
-    currentPerson3,
-    setCurrentPerson3,
+    currentPageRecall,
+    setCurrentPageRecall,
+    currentPageAnswers,
+    setCurrentPageAnswers,
+    currentPageResults,
+    setCurrentPageResults,
     firstNames,
     setFirstNames,
     lastNames,
@@ -157,7 +229,11 @@ export const GameContextProvider = ({ children }) => {
     setMinutesForAnswer,
   }
 
-  return <GameContext.Provider value={value}>{children}</GameContext.Provider>
+  return (
+    <NamesAndFacesContext.Provider value={value}>
+      {children}
+    </NamesAndFacesContext.Provider>
+  )
 }
 
-export const useGameContext = () => useContext(GameContext)
+export const useNamesAndFacesContext = () => useContext(NamesAndFacesContext)

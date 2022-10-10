@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useGameContext } from '../../context/GameContext'
-import './Start.css'
+import React, { ChangeEvent, useCallback, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { useNamesAndFacesContext } from "../../../context/NamesAndFacesContext"
+import "./Start.css"
 
-const blobToBase64 = (blob) =>
+const blobToBase64 = (blob: Blob) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.readAsDataURL(blob)
@@ -12,7 +12,7 @@ const blobToBase64 = (blob) =>
   })
 
 const Start = () => {
-  const [imagesLoading, setImagesLoading] = useState(false)
+  const [imagesLoading, setImagesLoading] = useState<boolean>(false)
 
   const {
     people,
@@ -21,9 +21,9 @@ const Start = () => {
     setCountDown,
     setMinutesForRecall,
     setMinutesForAnswer,
-  } = useGameContext()
+  } = useNamesAndFacesContext()
 
-  const [imagesFetched, setImagesFetched] = useState(0)
+  const [imagesFetched, setImagesFetched] = useState<number>(0)
 
   const navigate = useNavigate()
 
@@ -31,20 +31,17 @@ const Start = () => {
     setImagesLoading(true)
 
     const updatedPeople = await Promise.all(
-      people.map(
-        ({ img, ...person }) =>
-          new Promise(async (resolve, reject) => {
-            const res = await fetch(img)
+      people.map(async ({ img, ...person }) => {
+        const res = await fetch(img)
 
-            const blob = await res.blob()
+        const blob = await res.blob()
 
-            const url = await blobToBase64(blob)
+        const url = (await blobToBase64(blob)) as string
 
-            resolve({ ...person, img: url })
+        setImagesFetched((fetched) => fetched + 1)
 
-            setImagesFetched((fetched) => fetched + 1)
-          }),
-      ),
+        return { ...person, img: url }
+      })
     )
 
     setShuffledPeople((shuffledPeople) =>
@@ -52,18 +49,29 @@ const Start = () => {
         const { img } = updatedPeople.find(
           (updatedPerson) =>
             person.firstName === updatedPerson.firstName &&
-            person.lastName === updatedPerson.lastName,
-        )
+            person.lastName === updatedPerson.lastName
+        )!
 
         return { ...person, img }
-      }),
+      })
     )
 
     setPeople(updatedPeople)
 
-    navigate('/game')
-  }, [navigate, people, setPeople])
+    navigate("/names-and-faces/recall")
+  }, [navigate, people, setPeople, setShuffledPeople])
 
+  const handleCountDown = (e: ChangeEvent<HTMLInputElement>) => {
+    setCountDown(+e.target.value)
+  }
+
+  const handleMinutesForRecall = (e: ChangeEvent<HTMLInputElement>) => {
+    setMinutesForRecall(+e.target.value)
+  }
+
+  const handleMinutesForAnswer = (e: ChangeEvent<HTMLInputElement>) => {
+    setMinutesForAnswer(+e.target.value)
+  }
   return (
     <div className="settings">
       <div className="container">
@@ -71,21 +79,21 @@ const Start = () => {
           <label htmlFor="">Boshlang'ich vaqtni kiriting</label>
           <input
             type="number"
-            onChange={(e) => setCountDown(e.target.value)}
+            onChange={handleCountDown}
             placeholder="Standart vaqt 5 soniya"
           />
 
           <label htmlFor=""> Eslab qolish vaqtini kiriting</label>
           <input
             type="number"
-            onChange={(e) => setMinutesForRecall(e.target.value)}
+            onChange={handleMinutesForRecall}
             placeholder="Standart vaqt 5 daqiqa"
           />
 
           <label htmlFor="">Javob berish vaqtini kiriting</label>
           <input
             type="number"
-            onChange={(e) => setMinutesForAnswer(e.target.value)}
+            onChange={handleMinutesForAnswer}
             placeholder="Standart vaqt 5 daqiqa "
           />
         </form>
@@ -93,7 +101,7 @@ const Start = () => {
           <button onClick={handleNavigate} disabled={imagesLoading}>
             {imagesLoading
               ? `Loading images (${imagesFetched} / ${people.length})`
-              : 'Start'}
+              : "Start"}
           </button>
         </div>
       </div>

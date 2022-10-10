@@ -1,20 +1,20 @@
-import { useState, useEffect } from 'react'
-import { useGameContext } from '../../context/GameContext'
+import { useEffect, useState } from 'react'
+import { useNamesAndFacesContext } from '../../../context/NamesAndFacesContext'
 
 const PrevPage = () => {
   const {
     people,
-    setCurrentPerson,
-    setCurrentPerson2,
-    setCurrentPerson3,
-  } = useGameContext()
+    setCurrentPageRecall,
+    setCurrentPageAnswers,
+    setCurrentPageResults,
+  } = useNamesAndFacesContext()
 
   const [longPressRecall, setLongPressRecall] = useState(false)
   const [longPressAnswers, setLongPressAnswers] = useState(false)
   const [longPressResults, setLongPressResults] = useState(false)
 
   const prevPageRecall = () => {
-    setCurrentPerson((oldPage) => {
+    setCurrentPageRecall((oldPage: number) => {
       let prevPage = oldPage - 1
       if (prevPage < 1) {
         prevPage = people?.length
@@ -24,7 +24,7 @@ const PrevPage = () => {
   }
 
   const prevPageAnswers = () => {
-    setCurrentPerson2((oldPage) => {
+    setCurrentPageAnswers((oldPage: number) => {
       let prevPage = oldPage - 1
       if (prevPage < 1) {
         prevPage = people?.length
@@ -32,8 +32,9 @@ const PrevPage = () => {
       return prevPage
     })
   }
+
   const prevPageResults = () => {
-    setCurrentPerson3((oldPage) => {
+    setCurrentPageResults((oldPage) => {
       let prevPage = oldPage - 1
       if (prevPage < 1) {
         prevPage = people?.length
@@ -43,41 +44,41 @@ const PrevPage = () => {
   }
 
   useEffect(() => {
-    let timerId
+    let timerId: null | ReturnType<typeof setTimeout> = null
     if (longPressRecall) {
       timerId = setTimeout(prevPageRecall, 150)
     } else {
-      clearTimeout(timerId)
+      clearTimeout(Number(timerId))
     }
 
     return () => {
-      clearTimeout(timerId)
+      clearTimeout(Number(timerId))
     }
   }, [prevPageRecall, longPressRecall])
 
   useEffect(() => {
-    let timerId
+    let timerId: null | ReturnType<typeof setTimeout> = null
     if (longPressAnswers) {
       timerId = setTimeout(prevPageAnswers, 150)
     } else {
-      clearTimeout(timerId)
+      clearTimeout(Number(timerId))
     }
 
     return () => {
-      clearTimeout(timerId)
+      clearTimeout(Number(timerId))
     }
   }, [prevPageAnswers, longPressAnswers])
 
   useEffect(() => {
-    let timerId
+    let timerId: null | ReturnType<typeof setTimeout> = null
     if (longPressResults) {
       timerId = setTimeout(prevPageResults, 150)
     } else {
-      clearTimeout(timerId)
+      clearTimeout(Number(timerId))
     }
 
     return () => {
-      clearTimeout(timerId)
+      clearTimeout(Number(timerId))
     }
   }, [prevPageResults, longPressResults])
 

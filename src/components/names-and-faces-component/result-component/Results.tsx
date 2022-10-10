@@ -1,24 +1,24 @@
-import React, { useState } from 'react'
-import '../game-component/Game.css'
-import { useGameContext } from '../../context/GameContext'
-import { ArrowLeft, ArrowRight, Rewind, Eye } from 'react-feather'
+import { useState } from 'react'
+import { ArrowLeft, ArrowRight, Eye, Rewind } from 'react-feather'
+import { useNamesAndFacesContext } from '../../../context/NamesAndFacesContext'
 import NextPage from '../button-component/NextPage'
 import PrevPage from '../button-component/PrevPage'
+import '../Styles.css'
 
 const Result = () => {
   const {
     people,
     shuffledPeople,
-    currentPerson3,
-    setCurrentPerson3,
+    currentPageResults,
+    setCurrentPageResults,
     results,
-  } = useGameContext()
+  } = useNamesAndFacesContext()
 
   const { prevResultsHandlers } = PrevPage()
   const { nextResultsHandlers } = NextPage()
 
-  const [previewFirstName, setPreviewFirstName] = useState(false)
-  const [previewLastName, setPreviewLastName] = useState(false)
+  const [previewFirstName, setPreviewFirstName] = useState<boolean>(false)
+  const [previewLastName, setPreviewLastName] = useState<boolean>(false)
 
   const handlePreviewFirstName = () => {
     setPreviewFirstName((current) => !current)
@@ -28,11 +28,11 @@ const Result = () => {
     setPreviewLastName((current) => !current)
   }
 
-  const [visibleFirstNames, setVisibleFirstNames] = useState(
+  const [visibleFirstNames, setVisibleFirstNames] = useState<boolean[]>(
     Array(results?.length).fill(false),
   )
 
-  const [visibleLastNames, setVisibleLastNames] = useState(
+  const [visibleLastNames, setVisibleLastNames] = useState<boolean[]>(
     Array(results?.length).fill(false),
   )
 
@@ -44,33 +44,30 @@ const Result = () => {
   )
 
   const firstPage = () => {
-    setCurrentPerson3(1)
+    setCurrentPageResults(1)
   }
 
   return (
-    <div className="results">
+    <div className="faces">
       <div className="container">
-        <section className="results-section">
-          <div className="results-section__header">
-            <p className="results-section__header-title">
+        <section className="faces-section">
+          <div className="faces-section__header">
+            <p className="faces-section__header-title">
               Umumiy: {results.length} ta
               <br />
               To'g'ri topilganlar:{' '}
               {correctFirstNames.length + correctLastNames.length}ta <br />
             </p>
           </div>
-          <div className="results-section__items">
-            {results?.map((_, index) => {
-              if (index === currentPerson3 - 1) {
-                return (
-                  <article className="results-section__item" key={index}>
-                    <img
-                      className="results-section__item-image"
-                      src={results[index]?.img}
-                      alt={results[index]?.firstName}
-                    />
+          <div className="faces-section__cards">
+            {results?.map((result, index) => {
+              const { img, firstName } = result
 
-                    <form className="results-section__item-form">
+              if (index === currentPageResults - 1) {
+                return (
+                  <article key={index}>
+                    <img src={img} alt={firstName} />
+                    <form>
                       <div
                         style={{
                           position: 'relative',
@@ -99,11 +96,12 @@ const Result = () => {
                           }
                         />
                         <Eye
-                          className="results-section__form-preview"
+                          className="faces-section__form-preview"
                           style={{
-                            backgroundColor: previewFirstName && 'black',
-                            color: previewFirstName && 'white',
-                            padding: previewFirstName && '.1rem',
+                            backgroundColor: previewFirstName
+                              ? 'black'
+                              : 'white',
+                            color: previewFirstName ? 'white' : 'black',
                           }}
                           onClick={() => {
                             setVisibleFirstNames((firstNames) =>
@@ -142,11 +140,12 @@ const Result = () => {
                           }
                         />
                         <Eye
-                          className="results-section__form-preview"
+                          className="faces-section__form-preview"
                           style={{
-                            backgroundColor: previewLastName && 'black',
-                            color: previewLastName && 'white',
-                            padding: previewLastName && '.1rem',
+                            backgroundColor: previewLastName
+                              ? 'black'
+                              : 'white',
+                            color: previewLastName ? 'white' : 'black',
                           }}
                           onClick={() => {
                             setVisibleLastNames((lastNames) =>
@@ -169,18 +168,18 @@ const Result = () => {
               }
             })}
           </div>
-          <div className="results-section__indicator">
-            <span>{currentPerson3}</span>/<span>{people.length}</span>
+          <div className="faces-section__indicator">
+            <span>{currentPageResults}</span>/<span>{people.length}</span>
           </div>
-          <div className="results-section__control-buttons">
+          <div className="faces-section__control-buttons">
             <button onClick={firstPage} className="first-button">
-              <Rewind size={32}/>
+              <Rewind size={32} />
             </button>
             <button {...prevResultsHandlers} className="prev-button">
-              <ArrowLeft size={32}/>
+              <ArrowLeft size={32} />
             </button>
             <button {...nextResultsHandlers} className="next-button">
-              <ArrowRight size={32}/>
+              <ArrowRight size={32} />
             </button>
           </div>
         </section>

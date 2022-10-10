@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react'
-import '../game-component/Game.css'
-import { useGameContext } from '../../context/GameContext'
+import { ChangeEvent, useEffect, useState } from 'react'
+import { ArrowLeft, ArrowRight, Rewind } from 'react-feather'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, ArrowRight, Rewind } from 'react-feather'
+import { useNamesAndFacesContext } from '../../../context/NamesAndFacesContext'
 import NextPage from '../button-component/NextPage'
 import PrevPage from '../button-component/PrevPage'
+import '../Styles.css'
 
 const Answers = () => {
   let {
     shuffledPeople,
-    currentPerson2,
-    setCurrentPerson2,
+    currentPageAnswers,
+    setCurrentPageAnswers,
     firstNames,
     lastNames,
     setFirstNames,
     setLastNames,
     minutesForAnswer,
     setMinutesForAnswer,
-  } = useGameContext()
+  } = useNamesAndFacesContext()
 
   const { nextAnswersHandlers } = NextPage()
   const { prevAnswersHandlers } = PrevPage()
@@ -32,7 +32,7 @@ const Answers = () => {
         setSeconds((seconds) => seconds - 1)
       } else if (seconds === 0) {
         if (minutesForAnswer === 0) {
-          navigate('/results')
+          navigate('/names-and-faces/results')
         } else {
           setMinutesForAnswer((minutesForAnswer) => minutesForAnswer - 1)
           setSeconds(59)
@@ -41,7 +41,7 @@ const Answers = () => {
     }, 1000)
   }, [minutesForAnswer, seconds, setMinutesForAnswer, setSeconds, navigate])
 
-  const handleLastName = (e, index) => {
+  const handleLastName = (e: ChangeEvent<HTMLInputElement>, index: number) => {
     setLastNames((lastNames) =>
       lastNames.map((oldValue, currentIndex) =>
         currentIndex === index ? e.target.value : oldValue,
@@ -49,7 +49,7 @@ const Answers = () => {
     )
   }
 
-  const handleFirstName = (e, index) => {
+  const handleFirstName = (e: ChangeEvent<HTMLInputElement>, index: number) => {
     setFirstNames((firstNames) =>
       firstNames.map((oldValue, currentIndex) =>
         currentIndex === index ? e.target.value : oldValue,
@@ -58,39 +58,36 @@ const Answers = () => {
   }
 
   const firstPage = () => {
-    setCurrentPerson2(1)
+    setCurrentPageAnswers(1)
   }
 
   return (
-    <div className="answers">
+    <div className="faces">
       <div className="container">
-        <div className="answers-section">
-          <div className="answers-section__header">
+        <div className="faces-section">
+          <div className="faces-section__header">
             {minutesForAnswer === 0 && seconds === 0 ? null : (
-              <h3 className="answers-section__header-time">
+              <p className="faces-section__header-timer">
                 {minutesForAnswer}m {seconds < 10 ? `0${seconds}` : seconds}s
-              </h3>
+              </p>
             )}
-            <p className="answers-section__header-title">Answer</p>
+            <p className="faces-section__header-title">Answer</p>
             <Link
-              to="/results"
+              to="/names-and-faces/results"
               style={{ textDecoration: 'none' }}
-              className="answers-section__header-finish"
+              className="faces-section__header-finish"
             >
               Finish
             </Link>
           </div>
-          <div className="answers-section__items">
-            {shuffledPeople?.map((_, index) => {
-              if (index === currentPerson2 - 1) {
+          <div className="faces-section__cards">
+            {shuffledPeople?.map((shuffledPerson, index) => {
+              const { img, firstName } = shuffledPerson
+              if (index === currentPageAnswers - 1) {
                 return (
-                  <article className="answers-section__item" key={index}>
-                    <img
-                      className="answers-section__item-image"
-                      src={shuffledPeople[index]?.img}
-                      alt={shuffledPeople[index]?.firstName}
-                    />
-                    <form className="answers-section__item-form">
+                  <article key={index}>
+                    <img src={img} alt={firstName} />
+                    <form>
                       <input
                         type="text"
                         placeholder="Ism"
@@ -111,10 +108,11 @@ const Answers = () => {
               }
             })}
           </div>
-          <div className="answers-section__indicator">
-            <span>{currentPerson2}</span>/<span>{shuffledPeople?.length}</span>
+          <div className="faces-section__indicator">
+            <span>{currentPageAnswers}</span>/
+            <span>{shuffledPeople?.length}</span>
           </div>
-          <div className="answers-section__control-buttons">
+          <div className="faces-section__control-buttons">
             <button onClick={firstPage} className="first-button">
               <Rewind size={32} />
             </button>

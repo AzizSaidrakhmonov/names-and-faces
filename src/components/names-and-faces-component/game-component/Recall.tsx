@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from 'react'
-import './Game.css'
-import { useGameContext } from '../../context/GameContext'
+import React, { useEffect, useState } from 'react'
+import { ArrowLeft, ArrowRight, Rewind } from 'react-feather'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, ArrowRight, Rewind } from 'react-feather'
+import { useNamesAndFacesContext } from '../../../context/NamesAndFacesContext'
 import NextPage from '../button-component/NextPage'
 import PrevPage from '../button-component/PrevPage'
+import '../Styles.css'
 
 const Game = () => {
   const {
     people,
-    currentPerson,
-    setCurrentPerson,
+    currentPageRecall,
+    setCurrentPageRecall,
     countDown,
     setCountDown,
     minutesForRecall,
     setMinutesForRecall,
-  } = useGameContext()
+  } = useNamesAndFacesContext()
+
+  const [seconds, setSeconds] = useState<number>(0)
+  const navigate = useNavigate()
 
   const { prevRecallHandlers } = PrevPage()
   const { nextRecallHandlers } = NextPage()
-
-  const [seconds, setSeconds] = useState(0)
-  const navigate = useNavigate()
 
   useEffect(() => {
     setTimeout(() => {
@@ -31,7 +31,7 @@ const Game = () => {
           setSeconds((seconds) => seconds - 1)
         } else if (seconds === 0) {
           if (minutesForRecall === 0) {
-            // navigate('/answers')
+            navigate('/names-and-faces/answers')
           } else {
             setMinutesForRecall((minutesForRecall) => minutesForRecall - 1)
             setSeconds(59)
@@ -55,11 +55,11 @@ const Game = () => {
   })
 
   const firstPage = () => {
-    setCurrentPerson(1)
+    setCurrentPageRecall(1)
   }
 
   return (
-    <div className="game">
+    <div className="faces">
       <div className="container">
         <div
           className="screen-countdown"
@@ -70,50 +70,54 @@ const Game = () => {
         </div>
         <div
           style={{ display: countDown > 0 ? 'none' : 'flex' }}
-          className="game-section"
+          className="faces-section"
         >
-          <div className="game-section__header">
+          <div className="faces-section__header">
             {minutesForRecall === 0 && seconds === 0 ? null : (
-              <h3 className="game-section__header-time">
+              <p className="faces-section__header-timer">
                 {minutesForRecall}m {seconds < 10 ? `0${seconds}` : seconds}s
-              </h3>
+              </p>
             )}
-            <p className="game-section__header-title">Recall</p>
+            <p className="faces-section__header-title">Recall</p>
             <Link
-              to="/answers"
+              to="/names-and-faces/answers"
               style={{ textDecoration: 'none' }}
-              className="game-section__header-finish"
+              className="faces-section__header-finish"
             >
               Finish
             </Link>
           </div>
-          <div className="game-section__items">
-            <article className="game-section__item">
-              <img
-                className="game-section__item-image"
-                src={people[currentPerson - 1]?.img}
-                alt={people[currentPerson - 1]?.firstName}
-              />
-              <h4 className="game-section__item-firstName">
-                {people[currentPerson - 1]?.firstName}
-              </h4>
-              <h4 className="game-section__item-lastName">
-                {people[currentPerson - 1]?.lastName}
-              </h4>
-            </article>
+          <div className="faces-section__cards">
+            {people.map((person, index) => {
+              const { img, firstName, lastName } = person
+              if (currentPageRecall - 1 === index) {
+                return (
+                  <article key={index}>
+                    <img
+                      src={img}
+                      alt={firstName}
+                    />
+                    <h4>{firstName}</h4>
+                    <h4>{lastName}</h4>
+                  </article>
+                )
+              } else {
+                return null
+              }
+            })}
           </div>
-          <div className="game-section__indicator">
-            <span>{currentPerson}</span>/<span>{people.length}</span>
+          <div className="faces-section__indicator">
+            <span>{currentPageRecall}</span>/<span>{people.length}</span>
           </div>
-          <div className="game-section__control-buttons">
+          <div className="faces-section__control-buttons">
             <button onClick={firstPage} className="first-button">
-              <Rewind size={32}/>
+              <Rewind size={32} />
             </button>
             <button {...prevRecallHandlers} className="prev-button">
-              <ArrowLeft size={32}/>
+              <ArrowLeft size={32} />
             </button>
             <button {...nextRecallHandlers} className="next-button">
-              <ArrowRight size={32}/>
+              <ArrowRight size={32} />
             </button>
           </div>
         </div>
